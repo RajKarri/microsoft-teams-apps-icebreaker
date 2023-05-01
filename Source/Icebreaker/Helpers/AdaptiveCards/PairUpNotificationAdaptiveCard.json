@@ -42,7 +42,6 @@
     },
     {
       "type": "Action.OpenUrl",
-      "title": "Propose meetup",
       "url": "${meetingLink}"
     },
     {
