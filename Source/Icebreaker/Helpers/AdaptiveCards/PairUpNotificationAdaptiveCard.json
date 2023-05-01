@@ -1,4 +1,4 @@
-﻿{
+{
   "type": "AdaptiveCard",
   "body": [
     {
@@ -12,33 +12,18 @@
           "wrap": true,
           "maxLines": 2,
           "horizontalAlignment": "${textAlignment}"
-        }
-      ]
-    },
-    {
-      "type": "Container",
-      "items": [
-        {
-          "type": "Container",
-          "items": [
-            {
-              "type": "TextBlock",
-              "text": "${matchUpCardMatchedText}",
-              "wrap": true,
-              "horizontalAlignment": "${textAlignment}"
-            }
-          ]
         },
         {
-          "type": "Container",
-          "items": [
-            {
-              "type": "TextBlock",
-              "text": "${matchUpCardContentPart1}",
-              "wrap": true,
-              "horizontalAlignment": "${textAlignment}"
-            }
-          ]
+          "type": "TextBlock",
+          "text": "${matchUpCardMatchedText}",
+          "wrap": true,
+          "horizontalAlignment": "${textAlignment}"
+        },
+        {
+          "type": "TextBlock",
+          "text": "${matchUpCardContentPart1}",
+          "wrap": true,
+          "horizontalAlignment": "${textAlignment}"
         },
         {
           "type": "TextBlock",
@@ -53,12 +38,12 @@
     {
       "type": "Action.OpenUrl",
       "title": "${chatWithMatchButtonText}",
-      "url": "https://teams.microsoft.com/l/chat/0/0?users=${personUpn}&message=${chatWithMessageGreeting}"
+      "value": "https://teams.microsoft.com/l/chat/0/0?users=${personUpn}&message=${chatWithMessageGreeting}"
     },
     {
       "type": "Action.OpenUrl",
       "title": "${proposeMeetupButtonText}",
-      "url": "${meetingLink}"
+      "value": "${meetingLink}"
     },
     {
       "type": "Action.Submit",
