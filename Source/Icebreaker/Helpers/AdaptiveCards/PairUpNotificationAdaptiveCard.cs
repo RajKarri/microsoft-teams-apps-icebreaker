@@ -28,70 +28,49 @@ namespace Icebreaker.Helpers.AdaptiveCards
             new Lazy<AdaptiveCardTemplate>(() => CardTemplateHelper.GetAdaptiveCardTemplate(AdaptiveCardName.PairUpNotification));
 
         /// <summary>
-        /// Creates the pairup notification card.
+        /// Creates the adaptive card for the team welcome message
         /// </summary>
-        /// <param name="teamName">The team name.</param>
-        /// <param name="sender">The user who will be sending this card.</param>
-        /// <param name="recipient">The user who will be receiving this card.</param>
-        /// <param name="botDisplayName">The bot display name.</param>
-        /// <returns>Pairup notification card</returns>
-        public static Attachment GetCard(string teamName, TeamsChannelAccount sender, TeamsChannelAccount recipient, string botDisplayName)
+        /// <param name="teamName">The team name</param>
+        /// <param name="botInstaller">The name of the person that installed the bot</param>
+        /// <returns>The welcome team adaptive card</returns>
+        public static Attachment GetCard(string teamName, string botInstaller)
         {
             // Set alignment of text based on default locale.
             var textAlignment = CultureInfo.CurrentCulture.TextInfo.IsRightToLeft ? AdaptiveHorizontalAlignment.Right.ToString() : AdaptiveHorizontalAlignment.Left.ToString();
 
-            // Guest users may not have their given name specified in AAD, so fall back to the full name if needed
-            var senderGivenName = string.IsNullOrEmpty(sender.GivenName) ? sender.Name : sender.GivenName;
-            var recipientGivenName = string.IsNullOrEmpty(recipient.GivenName) ? recipient.Name : recipient.GivenName;
+            string teamIntroPart1;
+            string teamIntroPart2;
+            string teamIntroPart3;
 
-            // To start a chat with a guest user, use their external email, not the UPN
-            var recipientUpn = !IsGuestUser(recipient) ? recipient.UserPrincipalName : recipient.Email;
-
-            var meetingTitle = string.Format(Resources.MeetupTitle, senderGivenName, recipientGivenName);
-            var meetingContent = string.Format(Resources.MeetupContent, botDisplayName);
-            var meetingLink = "https://teams.microsoft.com/l/meeting/new?subject=" + Uri.EscapeDataString(meetingTitle) + "&attendees=" + recipientUpn + "&content=" + Uri.EscapeDataString(meetingContent) + "&title=Propose1 meetup1";
-
-            //var cardData = new
-            //{
-            //    matchUpCardTitleContent = Resources.MatchUpCardTitleContent,
-            //    matchUpCardMatchedText = string.Format(Resources.MatchUpCardMatchedText, recipient.Name),
-            //    matchUpCardContentPart1 = string.Format(Resources.MatchUpCardContentPart1, botDisplayName, teamName, recipient.Name),
-            //    matchUpCardContentPart2 = Resources.MatchUpCardContentPart2,
-            //    chatWithMessageGreeting = Uri.EscapeDataString(Resources.ChatWithMessageGreeting),
-            //    pauseMatchesButtonText = Resources.PausePairingsButtonText,
-            //    personUpn = recipientUpn,
-            //    meetingLink,
-            //    textAlignment,
-            //    proposeMeetupButtonText = Resources.ProposeMeetupButtonText,
-            //    chatWithMatchButtonText = string.Format(Resources.ChatWithMatchButtonText, recipientGivenName),
-            //};
+            if (string.IsNullOrEmpty(botInstaller))
+            {
+                teamIntroPart1 = string.Format(Resources.InstallMessageUnknownInstallerPart1, teamName);
+                teamIntroPart2 = Resources.InstallMessageUnknownInstallerPart2;
+                teamIntroPart3 = Resources.InstallMessageUnknownInstallerPart3;
+            }
+            else
+            {
+                teamIntroPart1 = string.Format(Resources.InstallMessageKnownInstallerPart1, botInstaller, teamName);
+                teamIntroPart2 = Resources.InstallMessageKnownInstallerPart2;
+                teamIntroPart3 = Resources.InstallMessageKnownInstallerPart3;
+            }
 
             var baseDomain = CloudConfigurationManager.GetSetting("AppBaseDomain");
             var tourTitle = Resources.WelcomeTourTitle;
             var appId = CloudConfigurationManager.GetSetting("ManifestAppId");
 
-            var cardData1 = new
+            var welcomeData = new
             {
-                matchUpCardTitleContent = Resources.MatchUpCardTitleContent,
-                matchUpCardMatchedText = string.Format(Resources.MatchUpCardMatchedText, recipient.Name),
-                matchUpCardContentPart1 = string.Format(Resources.MatchUpCardContentPart1, botDisplayName, teamName, recipient.Name),
-                matchUpCardContentPart2 = Resources.MatchUpCardContentPart2,
                 textAlignment,
+                teamIntroPart1,
+                teamIntroPart2,
+                teamIntroPart3,
+                welcomeCardImageUrl = $"https://{baseDomain}/Content/welcome-card-image.png",
                 tourUrl = GetTourFullUrl(appId, GetTourUrl(baseDomain), tourTitle),
+                salutationText = Resources.SalutationTitleText,
                 tourButtonText = Resources.TakeATourButtonText,
             };
 
-            return GetCard(AdaptiveCardTemplate.Value, cardData1);
-        }
-
-        /// <summary>
-        /// Checks whether or not the account is a guest user.
-        /// </summary>
-        /// <param name="account">The <see cref="TeamsChannelAccount"/> user to check.</param>
-        /// <returns>True if the account is a guest user, false otherwise.</returns>
-        private static bool IsGuestUser(TeamsChannelAccount account)
-        {
-            return account.UserPrincipalName.IndexOf(ExternallyAuthenticatedUpnMarker, StringComparison.InvariantCultureIgnoreCase) >= 0;
+            return GetCard(AdaptiveCardTemplate.Value, welcomeData);
         }
     }
-}
