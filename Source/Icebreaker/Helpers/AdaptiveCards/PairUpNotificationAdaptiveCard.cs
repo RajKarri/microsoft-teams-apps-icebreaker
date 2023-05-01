@@ -1,4 +1,4 @@
-﻿// <copyright file="PairUpNotificationAdaptiveCard.cs" company="Microsoft">
+// <copyright file="PairUpNotificationAdaptiveCard.cs" company="Microsoft">
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 // </copyright>
@@ -56,13 +56,13 @@ namespace Icebreaker.Helpers.AdaptiveCards
                 matchUpCardMatchedText = string.Format(Resources.MatchUpCardMatchedText, recipient.Name),
                 matchUpCardContentPart1 = string.Format(Resources.MatchUpCardContentPart1, botDisplayName, teamName, recipient.Name),
                 matchUpCardContentPart2 = Resources.MatchUpCardContentPart2,
-                chatWithMatchButtonText = string.Format(Resources.ChatWithMatchButtonText, recipientGivenName),
                 chatWithMessageGreeting = Uri.EscapeDataString(Resources.ChatWithMessageGreeting),
                 pauseMatchesButtonText = Resources.PausePairingsButtonText,
-                proposeMeetupButtonText = Resources.ProposeMeetupButtonText,
                 personUpn = recipientUpn,
                 meetingLink,
                 textAlignment,
+                proposeMeetupButtonText = Resources.ProposeMeetupButtonText,
+                chatWithMatchButtonText = string.Format(Resources.ChatWithMatchButtonText, recipientGivenName),
             };
 
             return GetCard(AdaptiveCardTemplate.Value, cardData);
