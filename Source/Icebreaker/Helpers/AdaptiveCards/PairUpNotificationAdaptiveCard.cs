@@ -74,3 +74,4 @@ namespace Icebreaker.Helpers.AdaptiveCards
             return GetCard(AdaptiveCardTemplate.Value, welcomeData);
         }
     }
+    }
