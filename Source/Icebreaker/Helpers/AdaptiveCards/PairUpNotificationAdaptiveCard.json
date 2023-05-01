@@ -1,6 +1,4 @@
 {
-  "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
-  "version": "1.0",
   "type": "AdaptiveCard",
   "body": [
     {
@@ -10,27 +8,39 @@
           "type": "TextBlock",
           "size": "Medium",
           "weight": "Bolder",
-          "text": "${matchUpCardTitleContent}",
+          "text": "${salutationText}",
+          "horizontalAlignment": "${textAlignment}"
+        }
+      ]
+    },
+    {
+      "type": "Container",
+      "items": [
+        {
+          "type": "Image",
+          "horizontalAlignment": "Center",
+          "url": "${welcomeCardImageUrl}",
+          "width": "424px",
+          "height": "248px"
+        },
+        {
+          "type": "TextBlock",
+          "text": "${teamIntroPart1}",
           "wrap": true,
-          "maxLines": 2,
           "horizontalAlignment": "${textAlignment}"
         },
         {
           "type": "TextBlock",
-          "text": "${matchUpCardMatchedText}",
+          "text": "${teamIntroPart2}",
           "wrap": true,
+          "spacing": "Medium",
           "horizontalAlignment": "${textAlignment}"
         },
         {
           "type": "TextBlock",
-          "text": "${matchUpCardContentPart1}",
+          "text": "${teamIntroPart3}",
           "wrap": true,
-          "horizontalAlignment": "${textAlignment}"
-        },
-        {
-          "type": "TextBlock",
-          "text": "${matchUpCardContentPart2}",
-          "wrap": true,
+          "spacing": "Medium",
           "horizontalAlignment": "${textAlignment}"
         }
       ]
@@ -42,5 +52,7 @@
       "title": "${tourButtonText}",
       "url": "${tourUrl}"
     }
-  ]
+  ],
+  "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+  "version": "1.0"
 }
