@@ -42,6 +42,7 @@
     },
     {
       "type": "Action.OpenUrl",
+      "label": "Testing label",
       "title": "${proposeMeetupButtonText}",
       "url": "${meetingLink}"
     },
