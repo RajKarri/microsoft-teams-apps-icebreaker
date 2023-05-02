@@ -41,9 +41,8 @@
       "data": {
         "msteams": {
           "type": "openUrl",
-          "displayText": "${chatWithMatchButtonText}",
-          "text":  "openchatwindow",
-          "url": "https://teams.microsoft.com/l/chat/0/0?users=${personUpn}&message=${chatWithMessageGreeting}"
+          "title": "${chatWithMatchButtonText}",
+          "value": "https://teams.microsoft.com/l/chat/0/0?users=${personUpn}&message=${chatWithMessageGreeting}"
         }
       }
     },
