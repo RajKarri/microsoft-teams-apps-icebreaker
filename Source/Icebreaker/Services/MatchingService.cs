@@ -31,6 +31,7 @@ namespace Icebreaker.Services
         private readonly ConversationHelper conversationHelper;
         private readonly TelemetryClient telemetryClient;
         private readonly BotAdapter botAdapter;
+        private readonly ITurnContext turnContext;
         private readonly int maxPairUpsPerTeam;
         private readonly string botDisplayName;
 
@@ -41,11 +42,12 @@ namespace Icebreaker.Services
         /// <param name="conversationHelper">Conversation helper instance to notify team members</param>
         /// <param name="telemetryClient">The telemetry client to use</param>
         /// <param name="botAdapter">Bot adapter.</param>
-        public MatchingService(IBotDataProvider dataProvider, ConversationHelper conversationHelper, TelemetryClient telemetryClient, BotAdapter botAdapter)
+        public MatchingService(IBotDataProvider dataProvider, ConversationHelper conversationHelper, TelemetryClient telemetryClient, BotAdapter botAdapter, ITurnContext turnContext)
         {
             this.dataProvider = dataProvider;
             this.conversationHelper = conversationHelper;
             this.telemetryClient = telemetryClient;
+            this.turnContext = turnContext;
             this.botAdapter = botAdapter;
             this.maxPairUpsPerTeam = Convert.ToInt32(CloudConfigurationManager.GetSetting("MaxPairUpsPerTeam"));
             this.botDisplayName = CloudConfigurationManager.GetSetting("BotDisplayName");
@@ -151,8 +153,8 @@ namespace Icebreaker.Services
 
             // Send notifications and return the number that was successful
             var notifyResults = await Task.WhenAll(
-                this.conversationHelper.NotifyUserAsync(this.botAdapter, teamModel.ServiceUrl, teamModel.TeamId, MessageFactory.Attachment(cardForPerson1), teamsPerson1, teamModel.TenantId, cancellationToken),
-                this.conversationHelper.NotifyUserAsync(this.botAdapter, teamModel.ServiceUrl, teamModel.TeamId, MessageFactory.Attachment(cardForPerson2), teamsPerson2, teamModel.TenantId, cancellationToken));
+                this.conversationHelper.NotifyUserAsync(this.turnContext, MessageFactory.Attachment(cardForPerson1), teamsPerson1, teamModel.TenantId, cancellationToken),
+                this.conversationHelper.NotifyUserAsync(this.turnContext, MessageFactory.Attachment(cardForPerson2), teamsPerson2, teamModel.TenantId, cancellationToken));
             return notifyResults.Count(wasNotified => wasNotified);
         }
 
