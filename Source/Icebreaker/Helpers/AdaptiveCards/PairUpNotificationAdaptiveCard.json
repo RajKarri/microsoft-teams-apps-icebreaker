@@ -40,8 +40,9 @@
       "title": "${chatWithMatchButtonText}",
       "data": {
         "msteams": {
-          "type": "OpenUrl",
-          "title": "${chatWithMatchButtonText}",
+          "type": "openUrl",
+          "displayText": "${chatWithMatchButtonText}",
+          "text":  "openchatwindow",
           "url": "https://teams.microsoft.com/l/chat/0/0?users=${personUpn}&message=${chatWithMessageGreeting}"
         }
       }
