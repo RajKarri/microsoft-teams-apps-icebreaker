@@ -11,6 +11,7 @@ namespace Icebreaker.Bot
     using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
+    using AdaptiveCards;
     using Icebreaker.Helpers;
     using Icebreaker.Helpers.AdaptiveCards;
     using Icebreaker.Interfaces;
@@ -23,6 +24,8 @@ namespace Icebreaker.Bot
     using Microsoft.Bot.Connector.Authentication;
     using Microsoft.Bot.Schema;
     using Microsoft.Bot.Schema.Teams;
+    using Newtonsoft.Json.Linq;
+    using Newtonsoft.Json;
 
     /// <summary>
     /// Implements the core logic for Icebreaker bot
@@ -235,6 +238,45 @@ namespace Icebreaker.Bot
             await base.OnMessageActivityAsync(turnContext, cancellationToken);
         }
 
+        protected override async Task<InvokeResponse> OnInvokeActivityAsync(ITurnContext<IInvokeActivity> turnContext, CancellationToken cancellationToken)
+        {
+            var activity = turnContext.Activity;
+            var activityValue = ((JObject)turnContext.Activity.Value).ToObject<AdaptiveCardInvokeValue>();
+
+            string cardJson = string.Empty;
+
+            //if (activityValue.Action.Verb == "openchatwindow")
+            //{
+            //    var optOutReply = activity.CreateReply();
+            //    optOutReply.Attachments = new List<Attachment>
+            //        {
+            //            new HeroCard()
+            //            {
+            //                Text = "Test reply 1",
+            //                Buttons = new List<CardAction>()
+            //                {
+            //                    new CardAction()
+            //                    {
+            //                        Title = "Tittle reply 2",
+            //                        DisplayText = "Disply text",
+            //                        Type = ActionTypes.OpenUrl,
+            //                        Text = MatchingActions.OpenChatWindow,
+            //                    },
+            //                },
+            //            }.ToAttachment(),
+            //        };
+            //}
+            var adaptiveCardResponse = new AdaptiveCardInvokeResponse()
+            {
+                StatusCode = 200,
+                Type = AdaptiveCard.ContentType,
+                Value = JsonConvert.DeserializeObject("{\"test\": \"This is testc reply\"}")
+            };
+
+            return CreateInvokeResponse(adaptiveCardResponse);
+
+        }
+
         /// <summary>
         /// Handle opt in/out operations by updating user preference in data store.
         /// </summary>
@@ -263,7 +305,7 @@ namespace Icebreaker.Bot
                                 {
                                     Title = "Tittle reply 2",
                                     DisplayText = "Disply text",
-                                    Type = ActionTypes.MessageBack,
+                                    Type = ActionTypes.OpenUrl,
                                     Text = MatchingActions.OpenChatWindow,
                                 },
                             },
