@@ -73,11 +73,11 @@ namespace Icebreaker.Helpers.AdaptiveCards
                 teamIntroPart1,
                 teamIntroPart2,
                 teamIntroPart3,
-                personUpn = recipientUpn,
                 welcomeCardImageUrl = $"https://{baseDomain}/Content/welcome-card-image.png",
                 tourUrl = GetTourFullUrl(appId, GetTourUrl(baseDomain), tourTitle),
                 salutationText = Resources.SalutationTitleText,
                 tourButtonText = Resources.TakeATourButtonText,
+                personUpn = recipientUpn,
             };
 
             return GetCard(AdaptiveCardTemplate.Value, welcomeData);
