@@ -36,14 +36,13 @@
   ],
   "actions": [
     {
-      "type": "Action.Submit",
+      "type": "Action.Execute",
       "title": "${chatWithMatchButtonText}",
       "data": {
         "msteams": {
-          "type": "openUrl",
-          "displayText": "${chatWithMatchButtonText}",
-          "value": "https://teams.microsoft.com/l/chat/0/0?users=${personUpn}&message=${chatWithMessageGreeting}",
-          "text": "openChatWindow"
+          "type": "OpenUrl",
+          "title": "${chatWithMatchButtonText}",
+          "value": "https://teams.microsoft.com/l/chat/0/0?users=${personUpn}&message=${chatWithMessageGreeting}"
         }
       }
     },
