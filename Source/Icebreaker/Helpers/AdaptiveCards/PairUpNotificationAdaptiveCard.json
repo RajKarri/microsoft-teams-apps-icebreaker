@@ -38,12 +38,9 @@
     {
       "type": "Action.Execute",
       "title": "${chatWithMatchButtonText}",
+      "verb": "openchatwindow",
       "data": {
-        "msteams": {
-          "verb": "openUrl",
-          "title": "${chatWithMatchButtonText}",
-          "value": "https://teams.microsoft.com/l/chat/0/0?users=${personUpn}&message=${chatWithMessageGreeting}"
-        }
+        "value": "https://teams.microsoft.com/l/chat/0/0?users=${personUpn}&message=${chatWithMessageGreeting}"
       }
     },
     {
