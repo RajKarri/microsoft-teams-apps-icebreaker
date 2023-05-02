@@ -25,20 +25,20 @@
         },
         {
           "type": "TextBlock",
-          "text": "${teamIntroPart1}",
+          "text": "${introMessagePart1}",
           "wrap": true,
           "horizontalAlignment": "${textAlignment}"
         },
         {
           "type": "TextBlock",
-          "text": "${teamIntroPart2}",
+          "text": "${introMessagePart2}",
           "wrap": true,
           "spacing": "Medium",
           "horizontalAlignment": "${textAlignment}"
         },
         {
           "type": "TextBlock",
-          "text": "${teamIntroPart3}",
+          "text": "${introMessagePart3}",
           "wrap": true,
           "spacing": "Medium",
           "horizontalAlignment": "${textAlignment}"
@@ -51,6 +51,17 @@
       "type": "Action.OpenUrl",
       "title": "${tourButtonText}",
       "url": "${tourUrl}"
+    },
+    {
+      "type": "Action.Submit",
+      "title": "${pauseMatchesText}",
+      "data": {
+        "msteams": {
+          "type": "messageBack",
+          "displayText": "${pauseMatchesText}",
+          "text": "optout"
+        }
+      }
     }
   ],
   "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
