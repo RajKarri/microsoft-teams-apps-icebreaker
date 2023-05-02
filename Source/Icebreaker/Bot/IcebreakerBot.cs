@@ -271,7 +271,6 @@ namespace Icebreaker.Bot
                     };
                     // Open chat window
                     await turnContext.SendActivityAsync(optOutReply, cancellationToken).ConfigureAwait(false);
-
                 }
                 else if (string.Equals(activity.Text, MatchingActions.OptOut, StringComparison.InvariantCultureIgnoreCase))
                 {
