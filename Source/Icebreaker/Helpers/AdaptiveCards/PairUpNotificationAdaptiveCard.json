@@ -36,12 +36,10 @@
   ],
   "actions": [
     {
-      "type": "Action.Execute",
-      "title": "${chatWithMatchButtonText}",
-      "verb": "openchatwindow",
-      "data": {
-        "value": "https://teams.microsoft.com/l/chat/0/0?users=${personUpn}&message=${chatWithMessageGreeting}"
-      }
+      "type": "Action.OpenUrl",
+      "title": "User 124",
+      "label": "Test 123",
+      "url": "https://teams.microsoft.com/l/chat/0/0?users=${personUpn}&message=${chatWithMessageGreeting}"
     },
     {
       "type": "Action.Submit",
@@ -49,8 +47,9 @@
       "data": {
         "msteams": {
           "type": "openUrl",
-          "title": "${chatWithMatchButtonText}",
-          "url": "https://teams.microsoft.com/l/chat/0/0?users=${personUpn}&message=${chatWithMessageGreeting}"
+          "displayText": "I clicked this button",
+          "text": "text to bots",
+          "value": "https://teams.microsoft.com/l/chat/0/0?users=${personUpn}&message=${chatWithMessageGreeting}"
         }
       }
     },
@@ -71,5 +70,5 @@
       }
     }
   ],
-  "version": "1.0"
+  "version": "1.5"
 }
