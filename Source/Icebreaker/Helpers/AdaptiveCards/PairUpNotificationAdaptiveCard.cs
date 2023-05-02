@@ -46,38 +46,43 @@ namespace Icebreaker.Helpers.AdaptiveCards
             // To start a chat with a guest user, use their external email, not the UPN
             var recipientUpn = !IsGuestUser(recipient) ? recipient.UserPrincipalName : recipient.Email;
 
-            string teamIntroPart1;
-            string teamIntroPart2;
-            string teamIntroPart3;
+            string introMessagePart1;
+            string introMessagePart2;
+            string introMessagePart3;
 
             if (string.IsNullOrEmpty(botInstaller))
             {
-                teamIntroPart1 = string.Format(Resources.InstallMessageUnknownInstallerPart1, teamName);
-                teamIntroPart2 = Resources.InstallMessageUnknownInstallerPart2;
-                teamIntroPart3 = Resources.InstallMessageUnknownInstallerPart3;
+                introMessagePart1 = string.Format(Resources.InstallMessageUnknownInstallerPart1, teamName);
+                introMessagePart2 = Resources.InstallMessageUnknownInstallerPart2;
+                introMessagePart3 = Resources.InstallMessageUnknownInstallerPart3;
             }
             else
             {
-                teamIntroPart1 = string.Format(Resources.InstallMessageKnownInstallerPart1, botInstaller, teamName);
-                teamIntroPart2 = Resources.InstallMessageKnownInstallerPart2;
-                teamIntroPart3 = Resources.InstallMessageKnownInstallerPart3;
+                introMessagePart1 = string.Format(Resources.InstallMessageKnownInstallerPart1, botInstaller, teamName);
+                introMessagePart2 = Resources.InstallMessageKnownInstallerPart2;
+                introMessagePart3 = Resources.InstallMessageKnownInstallerPart3;
             }
 
             var baseDomain = CloudConfigurationManager.GetSetting("AppBaseDomain");
             var tourTitle = Resources.WelcomeTourTitle;
             var appId = CloudConfigurationManager.GetSetting("ManifestAppId");
+            var personFirstName = "Test user";
+            var botDisplayName = "Bot user";
 
             var welcomeData = new
             {
                 textAlignment,
-                teamIntroPart1,
-                teamIntroPart2,
-                teamIntroPart3,
+                personFirstName,
+                botDisplayName,
+                introMessagePart1,
+                introMessagePart2,
+                introMessagePart3,
+                team = teamName,
                 welcomeCardImageUrl = $"https://{baseDomain}/Content/welcome-card-image.png",
+                pauseMatchesText = Resources.PausePairingsButtonText,
                 tourUrl = GetTourFullUrl(appId, GetTourUrl(baseDomain), tourTitle),
                 salutationText = Resources.SalutationTitleText,
                 tourButtonText = Resources.TakeATourButtonText,
-                personUpn = recipientUpn,
             };
 
             return GetCard(AdaptiveCardTemplate.Value, welcomeData);
