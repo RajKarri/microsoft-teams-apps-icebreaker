@@ -36,7 +36,7 @@
   ],
   "actions": [
     {
-      "type": "Action.Execute",
+      "type": "Action.Submit",
       "title": "${chatWithMatchButtonText}",
       "data": {
         "msteams": {
