@@ -19,5 +19,10 @@ namespace Icebreaker.Helpers
         /// Opt-out for pairs matching
         /// </summary>
         public const string OptOut = "optout";
+
+        /// <summary>
+        /// Open chat window
+        /// </summary>
+        public const string OpenChatWindow = "openchatwindow";
     }
 }

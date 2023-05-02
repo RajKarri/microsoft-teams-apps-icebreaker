@@ -10,7 +10,6 @@ namespace Icebreaker.Helpers.AdaptiveCards
     using global::AdaptiveCards;
     using global::AdaptiveCards.Templating;
     using Icebreaker.Properties;
-    using Microsoft.Azure;
     using Microsoft.Bot.Schema;
     using Microsoft.Bot.Schema.Teams;
 
@@ -28,13 +27,14 @@ namespace Icebreaker.Helpers.AdaptiveCards
             new Lazy<AdaptiveCardTemplate>(() => CardTemplateHelper.GetAdaptiveCardTemplate(AdaptiveCardName.PairUpNotification));
 
         /// <summary>
-        /// Creates the adaptive card for the team welcome message
+        /// Creates the pairup notification card.
         /// </summary>
-        /// <param name="teamName">The team name</param>
-        /// <param name="botInstaller">The name of the person that installed the bot</param>
-        /// <returns>The welcome team adaptive card</returns>
-        // public static Attachment GetCard(string teamName, string botInstaller)
-        public static Attachment GetCard(string teamName, TeamsChannelAccount sender, TeamsChannelAccount recipient, string botInstaller)
+        /// <param name="teamName">The team name.</param>
+        /// <param name="sender">The user who will be sending this card.</param>
+        /// <param name="recipient">The user who will be receiving this card.</param>
+        /// <param name="botDisplayName">The bot display name.</param>
+        /// <returns>Pairup notification card</returns>
+        public static Attachment GetCard(string teamName, TeamsChannelAccount sender, TeamsChannelAccount recipient, string botDisplayName)
         {
             // Set alignment of text based on default locale.
             var textAlignment = CultureInfo.CurrentCulture.TextInfo.IsRightToLeft ? AdaptiveHorizontalAlignment.Right.ToString() : AdaptiveHorizontalAlignment.Left.ToString();
@@ -46,46 +46,26 @@ namespace Icebreaker.Helpers.AdaptiveCards
             // To start a chat with a guest user, use their external email, not the UPN
             var recipientUpn = !IsGuestUser(recipient) ? recipient.UserPrincipalName : recipient.Email;
 
-            string introMessagePart1;
-            string introMessagePart2;
-            string introMessagePart3;
+            var meetingTitle = string.Format(Resources.MeetupTitle, senderGivenName, recipientGivenName);
+            var meetingContent = string.Format(Resources.MeetupContent, botDisplayName);
+            var meetingLink = "https://teams.microsoft.com/l/meeting/new?subject=" + Uri.EscapeDataString(meetingTitle) + "&attendees=" + recipientUpn + "&content=" + Uri.EscapeDataString(meetingContent);
 
-            if (string.IsNullOrEmpty(botInstaller))
+            var cardData = new
             {
-                introMessagePart1 = string.Format(Resources.InstallMessageUnknownInstallerPart1, teamName);
-                introMessagePart2 = Resources.InstallMessageUnknownInstallerPart2;
-                introMessagePart3 = Resources.InstallMessageUnknownInstallerPart3;
-            }
-            else
-            {
-                introMessagePart1 = string.Format(Resources.InstallMessageKnownInstallerPart1, botInstaller, teamName);
-                introMessagePart2 = Resources.InstallMessageKnownInstallerPart2;
-                introMessagePart3 = Resources.InstallMessageKnownInstallerPart3;
-            }
-
-            var baseDomain = CloudConfigurationManager.GetSetting("AppBaseDomain");
-            var tourTitle = Resources.WelcomeTourTitle;
-            var appId = CloudConfigurationManager.GetSetting("ManifestAppId");
-            var personFirstName = "Test user";
-            var botDisplayName = "Bot user";
-
-            var welcomeData = new
-            {
+                matchUpCardTitleContent = Resources.MatchUpCardTitleContent,
+                matchUpCardMatchedText = string.Format(Resources.MatchUpCardMatchedText, recipient.Name),
+                matchUpCardContentPart1 = string.Format(Resources.MatchUpCardContentPart1, botDisplayName, teamName, recipient.Name),
+                matchUpCardContentPart2 = Resources.MatchUpCardContentPart2,
+                chatWithMatchButtonText = string.Format(Resources.ChatWithMatchButtonText, recipientGivenName),
+                chatWithMessageGreeting = Uri.EscapeDataString(Resources.ChatWithMessageGreeting),
+                pauseMatchesButtonText = Resources.PausePairingsButtonText,
+                proposeMeetupButtonText = Resources.ProposeMeetupButtonText,
+                personUpn = recipientUpn,
+                meetingLink,
                 textAlignment,
-                personFirstName,
-                botDisplayName,
-                introMessagePart1,
-                introMessagePart2,
-                introMessagePart3,
-                team = teamName,
-                welcomeCardImageUrl = $"https://{baseDomain}/Content/welcome-card-image.png",
-                pauseMatchesText = Resources.PausePairingsButtonText,
-                tourUrl = GetTourFullUrl(appId, GetTourUrl(baseDomain), tourTitle),
-                salutationText = Resources.SalutationTitleText,
-                tourButtonText = Resources.TakeATourButtonText,
             };
 
-            return GetCard(AdaptiveCardTemplate.Value, welcomeData);
+            return GetCard(AdaptiveCardTemplate.Value, cardData);
         }
 
         /// <summary>

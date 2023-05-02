@@ -249,7 +249,31 @@ namespace Icebreaker.Bot
                 var senderAadId = activity.From.AadObjectId;
                 var tenantId = activity.GetChannelData<TeamsChannelData>().Tenant.Id;
 
-                if (string.Equals(activity.Text, MatchingActions.OptOut, StringComparison.InvariantCultureIgnoreCase))
+                if ((string.Equals(activity.Text, MatchingActions.OpenChatWindow, StringComparison.InvariantCultureIgnoreCase)))
+                {
+                    var optOutReply = activity.CreateReply();
+                    optOutReply.Attachments = new List<Attachment>
+                    {
+                        new HeroCard()
+                        {
+                            Text = "Test reply 1",
+                            Buttons = new List<CardAction>()
+                            {
+                                new CardAction()
+                                {
+                                    Title = "Tittle reply 2",
+                                    DisplayText = "Disply text",
+                                    Type = ActionTypes.MessageBack,
+                                    Text = MatchingActions.OpenChatWindow,
+                                },
+                            },
+                        }.ToAttachment(),
+                    };
+                    // Open chat window
+                    await turnContext.SendActivityAsync(optOutReply, cancellationToken).ConfigureAwait(false);
+
+                }
+                else if (string.Equals(activity.Text, MatchingActions.OptOut, StringComparison.InvariantCultureIgnoreCase))
                 {
                     // User opted out
                     this.telemetryClient.TrackTrace($"User {senderAadId} opted out");

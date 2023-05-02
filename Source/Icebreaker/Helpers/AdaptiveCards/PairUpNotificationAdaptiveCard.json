@@ -8,39 +8,27 @@
           "type": "TextBlock",
           "size": "Medium",
           "weight": "Bolder",
-          "text": "${salutationText}",
+          "text": "${matchUpCardTitleContent}",
+          "wrap": true,
+          "maxLines": 2,
           "horizontalAlignment": "${textAlignment}"
-        }
-      ]
-    },
-    {
-      "type": "Container",
-      "items": [
-        {
-          "type": "Image",
-          "horizontalAlignment": "Center",
-          "url": "${welcomeCardImageUrl}",
-          "width": "424px",
-          "height": "248px"
         },
         {
           "type": "TextBlock",
-          "text": "${introMessagePart1}",
+          "text": "${matchUpCardMatchedText}",
           "wrap": true,
           "horizontalAlignment": "${textAlignment}"
         },
         {
           "type": "TextBlock",
-          "text": "${introMessagePart2}",
+          "text": "${matchUpCardContentPart1}",
           "wrap": true,
-          "spacing": "Medium",
           "horizontalAlignment": "${textAlignment}"
         },
         {
           "type": "TextBlock",
-          "text": "${introMessagePart3}",
+          "text": "${matchUpCardContentPart2}",
           "wrap": true,
-          "spacing": "Medium",
           "horizontalAlignment": "${textAlignment}"
         }
       ]
@@ -48,22 +36,29 @@
   ],
   "actions": [
     {
+      "type": "Action.Execute",
+      "title": "${chatWithMatchButtonText}",
+      "verb": "openChatWindow",
+      "data": {
+        "url": "https://teams.microsoft.com/l/chat/0/0?users=${personUpn}&message=${chatWithMessageGreeting}"
+      }
+    },
+    {
       "type": "Action.OpenUrl",
-      "title": "${tourButtonText}",
-      "url": "${tourUrl}"
+      "title": "${proposeMeetupButtonText}",
+      "url": "${meetingLink}"
     },
     {
       "type": "Action.Submit",
-      "title": "${pauseMatchesText}",
+      "title": "${pauseMatchesButtonText}",
       "data": {
         "msteams": {
           "type": "messageBack",
-          "displayText": "${pauseMatchesText}",
+          "displayText": "${pauseMatchesButtonText}",
           "text": "optout"
         }
       }
     }
   ],
-  "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
   "version": "1.0"
 }
